@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Colony Approval Checklist</title>
+<style>
+:root{--bg:#f6f5f1;--pn:#fff;--tx:#1d2a26;--mu:#66726d;--ln:#dfddd5;--ac:#1f5c4a;--ac2:#e3efe9;--wn:#b4690e;--ok:#2e7d4f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#141a18;--pn:#1c2421;--tx:#e8eeeb;--mu:#93a19b;--ln:#2e3935;--ac:#6fc3a3;--ac2:#22352e;--wn:#e0a050;--ok:#6fc98f}}
+:root[data-theme=dark]{--bg:#141a18;--pn:#1c2421;--tx:#e8eeeb;--mu:#93a19b;--ln:#2e3935;--ac:#6fc3a3;--ac2:#22352e;--wn:#e0a050;--ok:#6fc98f}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 "Segoe UI",Roboto,"Noto Sans",system-ui,sans-serif}
+.app{display:grid;grid-template-columns:270px 1fr;min-height:100vh}
+aside{background:var(--pn);border-right:1px solid var(--ln);padding:16px 10px;position:sticky;top:0;height:100vh;overflow:auto}
+aside h1{font:700 17px Georgia,serif;margin:0 8px 2px}aside small{display:block;margin:0 8px 12px;color:var(--mu)}
+.ph{display:block;width:100%;text-align:left;background:none;border:0;color:var(--tx);padding:8px;border-radius:8px;cursor:pointer;font:inherit;font-size:14px}
+.ph:hover{background:var(--ac2)}.ph.on{background:var(--ac2);font-weight:600;box-shadow:inset 3px 0 var(--ac)}
+.ph .r{display:flex;justify-content:space-between;gap:6px}.ph .c{color:var(--mu);font-size:12px;white-space:nowrap}
+.bar{height:4px;background:var(--ln);border-radius:3px;margin-top:5px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ok);width:0}
+main{padding:18px 22px;max-width:980px;width:100%}
+.top{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.top input,.top select,.top button{font:inherit;padding:8px 10px;border:1px solid var(--ln);border-radius:8px;background:var(--pn);color:var(--tx)}
+.top input{flex:1;min-width:160px}.top button{cursor:pointer}
+.sum{background:var(--pn);border:1px solid var(--ln);border-radius:12px;padding:14px 16px;margin-bottom:14px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.sum b{font:700 28px Georgia,serif}.sum .bar{flex:1;min-width:140px;height:8px}
+h2{font:700 18px Georgia,serif;margin:18px 0 8px}
+.it{background:var(--pn);border:1px solid var(--ln);border-radius:10px;margin-bottom:8px;overflow:hidden}
+.it.done .t{color:var(--mu);text-decoration:line-through}
+.hd{display:flex;gap:10px;align-items:center;padding:10px 12px;cursor:pointer}
+.hd input{width:20px;height:20px;accent-color:var(--ok);flex:none;cursor:pointer}
+.n{color:var(--mu);font-size:12px;min-width:26px}.t{flex:1;font-weight:500}
+.tag{font-size:12px;padding:2px 8px;border-radius:99px;background:var(--ac2);color:var(--ac);white-space:nowrap}
+.dt{display:none;padding:4px 14px 14px 58px;border-top:1px dashed var(--ln)}.it.open .dt{display:block}
+.dt h4{margin:12px 0 4px;font-size:13px;color:var(--mu);font-weight:600}
+.off{background:var(--ac2);border-radius:8px;padding:8px 10px}
+ol{margin:0;padding-left:0;list-style:none;counter-increment:s}
+ol li{display:flex;gap:10px;padding:6px 0;counter-increment:s}
+ol li:before{content:counter(s);flex:none;width:22px;height:22px;border-radius:50%;background:var(--ac);color:var(--bg);font-size:12px;display:grid;place-items:center;margin-top:1px}
+.empty{padding:30px;text-align:center;color:var(--mu)}
+@media(max-width:760px){.app{grid-template-columns:1fr}aside{position:static;height:auto;max-height:230px;border-right:0;border-bottom:1px solid var(--ln)}main{padding:14px 12px}.dt{padding-left:14px}.tag{display:none}}
+.pj{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}.pj button,.pj input{font:inherit;padding:7px 12px;border:1px solid var(--ln);border-radius:99px;background:var(--pn);color:var(--tx);cursor:pointer}.pj input{cursor:text;border-radius:8px}.pj .pc.on{background:var(--ac);color:var(--bg);border-color:var(--ac);font-weight:600}.pj .pc span{opacity:.7;font-size:12px}.pj .dl{margin-left:auto;color:#b3261e;border-color:#b3261e}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+</style></head><body>
+<div class="app"><aside><h1>Approval Checklist</h1><small>Colony / Plotted Development</small><small id="sy">☁ Connecting…</small><div id="ph"></div></aside>
+<main>
+<div class="pj" id="pj"></div>
+<div class="sum"><div><b id="pc">0%</b><div style="color:var(--mu)" id="pt"></div></div><div class="bar"><i id="pb"></i></div></div>
+<div class="top"><input id="q" type="search" placeholder="Search document or office…">
+<select id="sf"><option value="">All Stages</option></select>
+<select id="st"><option value="">All Status</option><option value="p">Pending</option><option value="d">Done</option></select>
+<button id="ex">Expand all</button><button id="co">Collapse all</button><button id="cv">Export CSV</button><button id="rs">Reset</button></div>
+<div id="list"></div>
+</main></div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyAIb-Ys_Imo8Jy5AzE2aWCv2Ok1ouTNiJc",
+  authDomain: "project-checklist-d4671.firebaseapp.com",
+  projectId: "project-checklist-d4671",
+  storageBucket: "project-checklist-d4671.firebasestorage.app",
+  messagingSenderId: "167180574389",
+  appId: "1:167180574389:web:cdc68afc4b73d43e29a8fc"
+};
+const fbApp = initializeApp(firebaseConfig);
+const db = getFirestore(fbApp);
+const auth = getAuth(fbApp);
+let fref = null;   // users/{uid} document, login ke baad set hota hai
+const CID = Math.random().toString(36).slice(2); // is browser ki pehchaan
+const PH=["Land Due Diligence","Land Use / CLU","Promoter / Developer","Colony Licence","Layout / Planning","NOCs","Financial / Compliance","RERA","Development","Sales Compliance","Registry","Completion / Handover"];
+const G=[
+["Dealing assistant / designated officer of the concerned department; confirm the competent authority with DTP","Prepare documents → submit application on the portal / at the office → obtain fee receipt → clear scrutiny and objections → file the written approval / order"],
+["Patwari → Kanungo / Revenue Officer → Tehsildar (as applicable)","Provide Khasra and owner details → obtain Fard / Jamabandi or submit application → get field / revenue verification done → file the certified copy / order"],
+["Property Lawyer; Sub-Registrar / Revenue record desk; concerned bank / court where relevant","Collect Khasra and title chain → run record, court and charge searches → obtain written title-search / legal report → resolve objections or obtain release documents"],
+["District Town Planner (DTP) / designated planning officer; confirm the exact competent authority","Submit Khasra / site plan → land use and zoning check → technical scrutiny → corrections and resubmission → obtain signed / stamped approved plan / order"],
+["Concerned Forest Range Officer / Divisional Forest Officer","Submit site / Khasra map → applicability and site review → prescribed proposal / NOC process → obtain written clearance / order"],
+["DTP / competent authority's CLU dealing branch; field reports may involve Revenue or other departments","Prepare CLU checklist and land papers → submit prescribed application and fee → reports and scrutiny → clear deficiencies → collect CLU order and conditions"],
+["Company CA / CS / Legal team; MCA / GST / Income Tax portal or relevant registrar, as applicable","Prepare correct entity documents → file on the relevant portal / with the authority → pay fee and complete verification → save certificate / acknowledgement"],
+["Property Lawyer → parties; registration / attestation office where legally required","Verify terms and title → draft agreement / POA → parties execute → stamp, register or attest if required → file signed copy and proof of authority"],
+["Competent Authority's colony licensing branch (DTP / PUDA / other authority as jurisdiction dictates)","Attach title, CLU and plans → submit licence application → technical / revenue scrutiny → comply with charges, security and NOCs → collect licence with conditions"],
+["Document Writer / Property Lawyer → concerned Sub-Registrar","Draft the deed and verify IDs → calculate stamp duty and fee → book appointment and present documents → parties' verification / biometrics → collect registered deed and receipt"],
+["Local / divisional office of the concerned asset-owning department (PWD / NHAI / AAI / Railway etc.)","Submit access / site plan and land papers → technical review / site inspection → comply with conditions and fee → obtain written NOC / permission"],
+["Concerned PSPCL subdivision / SDO; division office if referred","Submit load / layout and ownership / licence papers → technical estimate and scrutiny → pay charges / deposit → collect sanctioned drawing / connection / permission"],
+["Local water / sewerage body, Drainage / Irrigation office or relevant groundwater authority (confirm jurisdiction)","Submit demand / layout and disposal / source details → technical feasibility check → estimates, NOCs and charges → obtain approved connection / plan / clearance"],
+["Punjab Pollution Control Board regional office / relevant environmental authority (if applicable)","Confirm applicability → submit application and technical documents → scrutiny / inspection if required → comply and pay fee → obtain consent / clearance or written exemption"],
+["Local Fire Officer / Fire Department (if applicable)","Submit building / project details and fire plan → scrutiny / inspection if required → comply with deficiencies → obtain NOC / clearance"],
+["Competent Authority's accounts / licensing branch; bank for guarantee","Obtain demand note / challan → verify amount and account head → pay through the prescribed mode → submit receipt / bank guarantee → obtain acknowledgement and ledger update"],
+["Punjab RERA portal helpdesk / designated scrutiny officer; CA / architect / lawyer for the respective certificates","Create portal account → upload prescribed forms and supporting documents → pay fee → reply to scrutiny queries → download registration certificate / number"],
+["Project Engineer / Architect / authorized contractor; inspection by competent authority where required","Follow approved drawings / BOQ → execute work → maintain measurements, photos and bills → engineer's quality check → submit for inspection / completion where required"],
+["Developer's Sales + Accounts + Legal / Compliance team","Use only approved plots and compliant documents → customer KYC → agreement, receipt and payment ledger → verify RERA / legal disclosures → give signed copy to customer and keep one on file"]];
+// phase|task|authority|group|stage  (blank = same as previous row)
+const RAW=`0|Title deeds / complete ownership chain|Revenue / Sub-Registrar|0|Before Purchase
+|Latest Jamabandi / Fard|Revenue Department|1|
+|Mutation / Intkal verification|||
+|Khasra numbers & total area verification|||
+|Shajra / Tatima verification|||
+|Physical demarcation|||
+|Non-Encumbrance Certificate / encumbrance search|Revenue / Sub-Registrar|2|
+|Litigation / court case search|Court / Legal Counsel||
+|Mortgage / bank charge / release verification|Bank / Legal Counsel||
+|Acquisition / government restriction check|Relevant Government Department|0|
+|Approach road / legal access verification|Revenue / Local Authority||
+|Master Plan / zoning verification|Competent Planning Authority|3|
+|Waterbody / drain / choe / forest / restricted area check|Relevant Department|4|
+1|CLU feasibility assessment|Competent Planning Authority|3|Pre-Application
+|CLU application|||Approval
+|Location map|Planning Authority||
+|Signed Shajra plan|Revenue / Planning Authority|1|
+|Recent Jamabandi|Revenue Department||
+|Sale deeds / owner consent|Sub-Registrar / Legal|9|
+|Non-Encumbrance Certificate|Revenue / Sub-Registrar|2|
+|CLU approval / order|Competent Planning Authority|3|
+|Applicable CLU charges paid|Competent Authority|5|
+2|Company / firm constitution documents|ROC / Registrar / Internal|6|Pre-Application
+|PAN / GST / applicable tax documents|Income Tax / GST||
+|Landowner–developer JDA / collaboration agreement|Legal Counsel|7|
+|Power of Attorney, if applicable|Sub-Registrar / Legal||
+|Promoter authorization / board resolution|Company / Firm|6|
+3|Colony licence application|Competent Authority / DTP / PUDA framework|8|Approval
+|Ownership / title documents|Competent Authority||
+|CLU approval|||
+|Site / location plan|Planning Authority|3|
+|Proposed layout plan|||
+|Development work proposal / estimates|||
+|Applicable EDC / SIF / UDF / other charges|Competent Authority|8|
+|Security / bank guarantee, if applicable|Competent Authority / Bank||
+|Colony licence / permission issued|Competent Authority||
+4|Architect / Town Planner appointment|Internal / Planning Authority|3|Pre-Approval
+|Khasra superimposed layout|Planning Authority|1|Approval
+|Plot numbering and dimensions||3|
+|Internal road plan|||
+|Entry / exit and access plan|||
+|Park / open space plan|||
+|Commercial / community area, if applicable|||
+|Water supply plan|Water / Planning Authority||
+|Sewerage plan|Local Authority / Planning Authority||
+|Storm-water drainage plan|Drainage / Planning Authority||
+|Electrical / street-light plan|PSPCL / Planning Authority||
+5|PWD / road access NOC, if applicable|PWD Punjab|10|NOC
+|NHAI access NOC, if applicable|NHAI||
+|PSPCL electricity approval / NOC|PSPCL|11|
+|Water / sewerage approval|Local Authority / Water Agency|12|
+|Drainage / irrigation clearance, if applicable|Drainage / Irrigation Department||
+|PPCB consent / clearance, if applicable|Punjab Pollution Control Board|13|
+|Forest clearance, if applicable|Forest Department|4|
+|Groundwater / CGWA permission, if applicable|Relevant Ground Water Authority|12|
+|Airport / AAI clearance, if applicable|AAI / Relevant Authority|10|
+|Fire NOC, if applicable|Fire Department|14|
+|Environment clearance, if applicable|Relevant Environment Authority|13|
+|Railway / defence / other restricted-area NOC, if applicable|Relevant Authority|10|
+6|Licence fee paid|Competent Authority|15|Payment
+|EDC paid|||
+|Other applicable development / infrastructure charges|||
+|Security / bank guarantee submitted|Competent Authority / Bank||
+7|RERA applicability assessment|Punjab RERA / Legal Counsel|16|Pre-Registration
+|Promoter details and registration documents|Punjab RERA||Registration
+|Project land ownership documents|||
+|Title Search Report|Legal Counsel / Punjab RERA|2|
+|Non-Encumbrance Certificate|Revenue / Punjab RERA||
+|Approved site / location plan|Punjab RERA|16|
+|Approved layout with Khasra superimposition||1|
+|Colony licence||8|
+|CLU approval, where applicable||16|
+|Applicable approvals / NOCs|||
+|Form B / promoter declaration|||
+|CA Form 3 / project financial certification|CA / Punjab RERA||
+|Project cost and completion schedule|Punjab RERA||
+|Separate project bank account details|Bank / Punjab RERA||
+|Architect / Engineer / CA details|Punjab RERA||
+|Allotment Letter format|Punjab RERA / Legal||
+|Agreement for Sale format|||
+|Conveyance / Sale Deed format|Legal Counsel|9|
+|RERA registration certificate / number|Punjab RERA|16|Approval
+8|Site handover / commencement documentation|Internal / Authority|17|Development
+|Earthwork / site grading|Contractor / Engineer||
+|Road formation / construction|||
+|Road drainage / kerbs||12|
+|Water supply network|||
+|Sewerage network / disposal|||
+|Storm-water drainage|||
+|Electrical network / transformer, if applicable|PSPCL / Contractor|11|
+|Street lighting|||
+|Parks / plantation / open spaces|Contractor / Landscape|17|
+|Development work inspection / records|Engineer / Authority||
+|Contractor bills / BOQ / completion records|Internal / Engineer||
+9|Approved price list|Management / Legal|18|Pre-Sales
+|Brochure / advertisement legal review|Legal / Compliance||
+|RERA number and disclosures in marketing|RERA / Legal|16|
+|Approved plot list matched with CRM|Sales / Legal|18|
+|Customer KYC process|Sales / Compliance||Sales
+|Booking / application form|Legal / Sales||
+|Payment receipt system|Accounts||
+|Allotment letter|Legal / Sales||
+|Agreement for Sale|||
+|Customer ledger / payment schedule|Accounts||
+10|Plot number / dimensions verification|Legal / Engineer|0|Pre-Registry
+|Approved layout matching|Planning / Legal|3|
+|No-dues / payment clearance|Accounts|0|
+|Sale / conveyance deed drafting|Legal Counsel|9|
+|Stamp duty calculation|Sub-Registrar / Legal||Registry
+|Registration fee calculation|||
+|TDS compliance, if applicable|Income Tax / Accounts|0|
+|Buyer / seller KYC and PAN|Sub-Registrar|6|
+|Sale / conveyance deed registration||9|
+|Possession / handover letter|Developer / Buyer|17|Post-Registry
+|Mutation / ownership record update|Revenue Department|1|
+11|Roads completed|Engineer / Authority|17|Completion
+|Water system completed||12|
+|Sewerage / drainage completed|||
+|Electricity / street lighting completed|PSPCL / Engineer|11|
+|Parks / open spaces completed|Engineer / Authority|17|
+|Completion / development certificate, as applicable|Competent Authority||
+|Authority inspection / compliance|||
+|Maintenance arrangement|Developer / Association||Handover
+|Common-area / service handover|||`;
+let p=[null,"","",0,""];const D=RAW.split("\n").map((l,i)=>{const f=l.split("|");const r=[0,1,2,3,4].map(k=>{const v=f[k];if(v===undefined||v==="")return p[k];return k==3||k==0?+v:v});p=r;return{id:i+1,ph:r[0],t:r[1],au:r[2],g:r[3],st:r[4]}});
+const $=s=>document.querySelector(s);let cur=-1,adding=false,dc=false,P;
+try{P=JSON.parse(localStorage.getItem("acl2"))}catch(e){}
+if(!P||!P.list||!P.list.length){let o={};try{o=JSON.parse(localStorage.getItem("acl")||"{}")}catch(e){}P={list:[{id:1,name:"Project 1",done:o}],cur:1,n:1}}
+const PR=()=>P.list.find(x=>x.id==P.cur)||P.list[0];
+let S=PR().done;
+const setSy=t=>{const e=document.getElementById("sy");if(e)e.textContent=t};
+let sT;
+function push(){if(!fref){return}setDoc(fref,{data:JSON.stringify(P),by:CID,at:Date.now()}).then(()=>setSy("☁ Synced")).catch(e=>{console.error(e);setSy("⚠ Sync error (check Firestore rules / login)")})}
+const save=()=>{try{localStorage.setItem("acl2",JSON.stringify(P))}catch(e){}setSy("☁ Saving…");clearTimeout(sT);sT=setTimeout(push,400)};
+let firstSnap=true,unsub=null;
+function listen(){
+ if(unsub)unsub();
+ firstSnap=true;
+ unsub=onSnapshot(fref,snap=>{
+  if(!snap.exists()){if(firstSnap){firstSnap=false;push()}return}
+  firstSnap=false;
+  const d=snap.data();
+  if(d.by===CID||snap.metadata.hasPendingWrites){setSy("☁ Synced");return}
+  try{const n=JSON.parse(d.data);
+   if(n&&n.list&&n.list.length){const c=P.cur;P=n;if(P.list.some(x=>x.id==c))P.cur=c;S=PR().done;
+    try{localStorage.setItem("acl2",JSON.stringify(P))}catch(e){}
+    render();setSy("☁ Synced")}}catch(e){console.error(e)}
+ },err=>{console.error(err);setSy("⚠ Offline / permission error")});
+}
+onAuthStateChanged(auth,u=>{
+ if(u){fref=doc(db,"users",u.uid);listen()}
+ else{signInAnonymously(auth).catch(e=>{console.error(e);setSy("⚠ Anonymous sign-in is disabled (enable it in Firebase Console)")})}
+});
+const stages=[...new Set(D.map(d=>d.st))];
+$("#sf").innerHTML+=stages.map(s=>`<option>${s}</option>`).join("");
+const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+function side(){const tot=D.length,dn=D.filter(d=>S[d.id]).length;
+let h=`<button class="ph ${cur<0?"on":""}" data-p="-1"><div class="r"><span>All Phases</span><span class="c">${dn}/${tot}</span></div></button>`;
+PH.forEach((n,i)=>{const a=D.filter(d=>d.ph==i),c=a.filter(d=>S[d.id]).length;
+h+=`<button class="ph ${cur==i?"on":""}" data-p="${i}"><div class="r"><span>${n}</span><span class="c">${c}/${a.length}</span></div><div class="bar"><i style="width:${c/a.length*100}%"></i></div></button>`});
+$("#ph").innerHTML=h;const pc=Math.round(dn/tot*100);$("#pc").textContent=pc+"%";$("#pb").style.width=pc+"%";$("#pt").textContent=`${PR().name}: ${dn} / ${tot} complete`;if(!adding)proj()}
+function render(){const q=$("#q").value.toLowerCase(),sf=$("#sf").value,st=$("#st").value;
+const a=D.filter(d=>(cur<0||d.ph==cur)&&(!sf||d.st==sf)&&(!st||(st=="d")==!!S[d.id])&&(!q||(d.t+d.au+G[d.g][0]+G[d.g][1]).toLowerCase().includes(q)));
+let h="",last=-1;a.forEach(d=>{if(d.ph!=last){h+=`<h2>${PH[d.ph]}</h2>`;last=d.ph}
+const g=G[d.g];h+=`<div class="it ${S[d.id]?"done":""}" data-i="${d.id}"><div class="hd"><input type="checkbox" ${S[d.id]?"checked":""} aria-label="Done"><span class="n">${d.id}</span><span class="t">${esc(d.t)}</span><span class="tag">${d.st}</span></div>
+<div class="dt"><h4>Department / Authority</h4><div>${esc(d.au)}</div><h4>Officer / Desk to Contact</h4><div class="off">${esc(g[0])}</div><h4>Apply-to-approval process</h4><ol>${g[1].split(" → ").map(s=>`<li>${esc(s)}</li>`).join("")}</ol></div></div>`});
+$("#list").innerHTML=h||'<div class="empty">No results found. Try changing the search or filters.</div>';side()}
+$("#list").onclick=e=>{const it=e.target.closest(".it");if(!it)return;const id=it.dataset.i;
+if(e.target.type=="checkbox"){S[id]=e.target.checked?1:0;save();it.classList.toggle("done",e.target.checked);side();if($("#st").value)render();return}
+it.classList.toggle("open")};
+$("#ph").onclick=e=>{const b=e.target.closest(".ph");if(b){cur=+b.dataset.p;render();scrollTo(0,0)}};
+["#q","#sf","#st"].forEach(s=>$(s).oninput=render);
+let rt;$("#rs").onclick=function(){if(!this.dataset.c){this.dataset.c=1;this.textContent="Click again to confirm";rt=setTimeout(()=>{delete this.dataset.c;this.textContent="Reset"},3000);return}
+clearTimeout(rt);delete this.dataset.c;this.textContent="Reset";PR().done={};S=PR().done;save();render()};
+$("#ex").onclick=()=>document.querySelectorAll(".it").forEach(e=>e.classList.add("open"));
+$("#co").onclick=()=>document.querySelectorAll(".it").forEach(e=>e.classList.remove("open"));
+$("#cv").onclick=()=>{const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+const rows=[["No","Phase","Document / Task","Department / Authority","Officer / Desk","Process","Stage","Status"]].concat(D.map(d=>[d.id,PH[d.ph],d.t,d.au,G[d.g][0],G[d.g][1],d.st,S[d.id]?"Done":"Pending"]));
+const b=new Blob(["\ufeff"+rows.map(r=>r.map(q).join(",")).join("\n")],{type:"text/csv"});
+const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=PR().name+"-checklist.csv";document.body.appendChild(a);a.click();a.remove()};
+function proj(){let h=P.list.map(x=>{const n=Object.values(x.done).filter(Boolean).length;return `<button class="pc ${x.id==P.cur?"on":""}" data-pid="${x.id}">${esc(x.name)} <span>${Math.round(n/D.length*100)}%</span></button>`}).join("");
+h+=adding?`<input id="pni" placeholder="Project name" maxlength="40"><button data-a="ok">Add</button><button data-a="no">Cancel</button>`:`<button data-a="new">+ New project</button>`;
+h+=`<button class="dl" data-a="del">${dc?"Click again to delete":"Delete project"}</button>`;
+$("#pj").innerHTML=h;if(adding)$("#pni").focus()}
+$("#pj").onclick=e=>{const b=e.target.closest("button");if(!b)return;
+if(b.dataset.pid){P.cur=+b.dataset.pid;S=PR().done;dc=false;save();render();return}
+const a=b.dataset.a;
+if(a=="new"){adding=true;dc=false;proj()}
+else if(a=="no"){adding=false;proj()}
+else if(a=="ok"){const v=$("#pni").value.trim();if(!v)return;P.n++;P.list.push({id:P.n,name:v,done:{}});P.cur=P.n;S=PR().done;adding=false;save();render()}
+else if(a=="del"){if(!dc){dc=true;proj();setTimeout(()=>{dc=false;if(!adding)proj()},3000);return}
+P.list=P.list.filter(x=>x.id!=P.cur);if(!P.list.length){P.n++;P.list.push({id:P.n,name:"Project 1",done:{}})}P.cur=P.list[0].id;S=PR().done;dc=false;save();render()}};
+$("#pj").onkeydown=e=>{if(e.key=="Enter"&&e.target.id=="pni")$("#pj").querySelector("[data-a=ok]").click()};
+render();
+</script></body></html>
